@@ -15,6 +15,8 @@ export default function ObservationForm({ mode }) {
     latitude: "",
     longitude: "",
     sky_condition: "",
+    air_temperature: "",
+    air_temperature_unit: "",
   };
 
   const [formData, setFormData] = useState({ ...initialFormData });
@@ -39,10 +41,10 @@ export default function ObservationForm({ mode }) {
   }
 
   function changeHandler({ target: { name, value } }) {
-    setFormData((previousFormData) => ({
-      ...previousFormData,
+    setFormData({
+      ...formData,
       [name]: value,
-    }));
+    });
   }
 
   const submitHandler = (event) => {
@@ -59,6 +61,7 @@ export default function ObservationForm({ mode }) {
 
     async function updateThisObservation() {
       try {
+        console.log('made it inside the front end update function')
         await updateObservation(formData);
         history.push("/");
       } catch (err) {
@@ -94,6 +97,7 @@ export default function ObservationForm({ mode }) {
               Enter a value between -90 and 90.
             </small>
           </div>
+
           <div className="col-6">
             <label className="form-label" htmlFor="longitude">
               Longitude
@@ -112,6 +116,45 @@ export default function ObservationForm({ mode }) {
             <small className="form-text text-muted">
               Enter a value between -180 and 180.
             </small>
+          </div>
+        </div>
+        <div className="row mb-3">
+          <div className="col-6 form-group">
+            <label className="form-label" htmlFor="air_temperature">
+              Air Temperature
+            </label>
+            <input
+              className="form-control"
+              id="air_temperature"
+              name="air_temperature"
+              type="number"
+              max="107"
+              min="-50"
+              value={formData.air_temperature}
+              onChange={changeHandler}
+              required={true}
+            />
+            <small className="form-text text-muted">
+              Enter a value between -50 and 107.
+            </small>
+          </div>
+
+          <div className="col-6">
+            <label className="form-label" htmlFor="air_temperature_unit">
+              Air Temperature Unit
+            </label>
+            <select
+              className="form-control"
+              id="air_temperature_unit"
+              name="air_temperature_unit"
+              value={formData.air_temperature_unit}
+              onChange={changeHandler}
+              required={true}
+            >
+              <option value="">Select air temperature unit</option>
+              <option value="C">Celcius</option>
+              <option value="F">Farenheit</option>
+            </select>
           </div>
         </div>
         <div className="mb-3">

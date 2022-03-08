@@ -23,6 +23,8 @@ function Home() {
       <td>{observation.longitude}</td>
       <td>{observation.sky_condition}</td>
       <td>{observation.created_at}</td>
+      <td>{observation.air_temperature}&#176;{observation.air_temperature_unit}</td>
+      {/* <td>{observation.air_temperature_unit}</td> */}
       <td>
         <button type="button" className="btn btn-secondary" onClick={()=> history.push(`/observations/${observation.observation_id}/edit`)}>
           <i className="fa-regular fa-pen-to-square"></i>
@@ -46,6 +48,7 @@ function Home() {
             <th scope="col">Longitude</th>
             <th scope="col">Sky Condition</th>
             <th scope="col">Created</th>
+            <th scope="col">Air Temperature</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
