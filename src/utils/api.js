@@ -45,6 +45,27 @@ async function fetchJson(url, options) {
   }
 }
 
+/**
+ * Retrieves all existing observations.
+ * @returns {Promise<[observations]>}
+ *  a promise that resolves to a possibly empty array of observations saved in the database.
+ */
+export async function listObservations(signal) {
+  const url = `${API_BASE_URL}/observations`;
+  const options = { headers, signal };
+  return await fetchJson(url, options);
+}
+
+/**
+ * Saves observation to the database (public/data/db.json).
+ * There is no validation done on the observation object, any object will be saved.
+ * @param observation
+ *  the observation to save, which must not have an `id` property
+ * @param signal
+ *  optional AbortController.signal
+ * @returns {Promise<observation>}
+ *  a promise that resolves the saved observation, which will now have an `id` property.
+ */
 export async function createObservation(observation, signal) {
   const url = `${API_BASE_URL}/observations`;
   const options = {
@@ -56,8 +77,36 @@ export async function createObservation(observation, signal) {
   return fetchJson(url, options);
 }
 
-export async function listObservations(signal) {
-  const url = `${API_BASE_URL}/observations`;
-  const options = { headers, signal };
-  return await fetchJson(url, options);
+/**
+ * Retrieves the observation with the specified `observationId`
+ * @param observationId
+ *  the `id` property matching the desired observation.
+ * @param signal
+ *  optional AbortController.signal
+ * @returns {Promise<any>}
+ *  a promise that resolves to the saved observation.
+ */
+export async function readObservation(observationId, signal) {
+  const url = `${API_BASE_URL}/observations/${observationId}`;
+  return await fetchJson(url, { signal }, {});
+}
+
+/**
+ * Updates an existing observation
+ * @param updatedObservation
+ *  the observation to save, which must have an `id` property.
+ * @param signal
+ *  optional AbortController.signal
+ * @returns {Promise<Error|*>}
+ *  a promise that resolves to the updated observation.
+ */
+export async function updateObservation(updatedObservation, signal) {
+  const url = `${API_BASE_URL}/observations/${updatedObservation.observation_id}`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ data: updatedObservation }),
+    signal,
+  };
+  return await fetchJson(url, options, updatedObservation);
 }
