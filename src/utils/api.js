@@ -110,3 +110,18 @@ export async function updateObservation(updatedObservation, signal) {
   };
   return await fetchJson(url, options, updatedObservation);
 }
+
+/**
+ * Deletes the observation with the specified `observationId`.
+ * @param observationId
+ *  the id of the observation to delete
+ * @param signal
+ *  optional AbortController.signal
+ * @returns {Promise<Error|*>}
+ *  a promise that resolves to an empty object.
+ */
+ export async function deleteObservation(observationId, signal) {
+  const url = `${API_BASE_URL}/observations/${observationId}`;
+  const options = { method: "DELETE", signal };
+  return await fetchJson(url, options);
+}
